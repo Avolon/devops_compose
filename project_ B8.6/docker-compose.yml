@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  php:
+    build: .
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./php/www:/usr/share/nginx/html
+    healthcheck:
+      test: ["CMD", "curl", "-sSf", "http://130.193.38.188:80 | grep -q works"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/www:/usr/share/nginx/html
+      - ./nginx/dev.conf:/etc/nginx/conf.d/dev.conf
+    entrypoint: /bin/sh -c "chmod -R 755 /usr/share/nginx/html/ && nginx -g 'daemon off;'"
+    depends_on:
+      - php
+    healthcheck:
+      test: ["CMD", "curl", "-sSf", "130.193.38.188:80 | grep -q works"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
