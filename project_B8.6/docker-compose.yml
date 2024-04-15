@@ -8,7 +8,8 @@ services:
     volumes:
       - ./php/www:/usr/share/nginx/html
     healthcheck:
-      test: ["CMD", "curl", "-sSf", "http://130.193.38.188:80 | grep -q works"]
+      test: ["CMD-SHELL", "curl -sSf http://127.0.0.1:80 | grep -q works"]
+      #test: ["CMD", "curl", "-sSf", "http://130.193.38.188:80 | grep -q works"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -24,7 +25,8 @@ services:
     depends_on:
       - php
     healthcheck:
-      test: ["CMD", "curl", "-sSf", "130.193.38.188:80 | grep -q works"]
+      test: ["CMD-SHELL", "curl -sSf http://127.0.0.1:80 | grep -q works"]
+      #test: ["CMD", "curl", "-sSf", "130.193.38.188:80 | grep -q works"]
       interval: 10s
       timeout: 5s
       retries: 3
